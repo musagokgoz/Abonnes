@@ -34,6 +34,8 @@ jobs:
           VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_tzR683A5C5MRbbMt1eYjnQ_bFtm1Mgz
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
