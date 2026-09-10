@@ -1,4 +1,4 @@
-name: Deploy Abonnes to GitHub Pages
+name: Build GitHub Pages docs
 
 on:
   push:
@@ -6,16 +6,14 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: pages-docs
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-docs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,24 +28,18 @@ jobs:
       - name: Build
         run: npm run build
         env:
+          GITHUB_ACTIONS: true
           VITE_SUPABASE_URL: https://mtmbjfkomeztootimvew.supabase.co
           VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_tzR683A5C5MRbbMt1eYjnQ_bFtm1Mgz
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Update docs output
+        run: |
+          rm -rf docs
+          cp -R dist docs
+          touch docs/.nojekyll
+      - name: Commit docs output
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add docs
+          git diff --cached --quiet || git commit -m "Deploy docs output [skip ci]"
+          git push
