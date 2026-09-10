@@ -14,14 +14,26 @@ export default function AuthScreen() {
     setMessage(null);
     setIsSubmitting(true);
 
-    const result = mode === 'login'
-      ? await supabase.auth.signInWithPassword({ email, password })
-      : await supabase.auth.signUp({ email, password });
+    let result;
+    try {
+      result = mode === 'login'
+        ? await supabase.auth.signInWithPassword({ email, password })
+        : await supabase.auth.signUp({ email, password });
+    } catch (error) {
+      setIsSubmitting(false);
+      setMessage({ type: 'error', text: error.message || 'Bağlantı kurulamadı.' });
+      return;
+    }
 
     setIsSubmitting(false);
 
     if (result.error) {
-      setMessage({ type: 'error', text: result.error.message });
+      const errorMessages = {
+        'Invalid login credentials': 'E-posta veya şifre hatalı.',
+        'Email not confirmed': 'E-posta adresinizi doğrulamanız gerekiyor.',
+        'User already registered': 'Bu e-posta zaten kayıtlı. Giriş yapmayı deneyin.',
+      };
+      setMessage({ type: 'error', text: errorMessages[result.error.message] || result.error.message });
       return;
     }
 
