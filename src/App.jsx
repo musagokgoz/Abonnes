@@ -217,7 +217,6 @@ export default function App() {
         }}
         onOpenNotifications={() => setIsNotificationsOpen(true)}
         alertsCount={alerts.length}
-        userEmail={user.email}
         onSignOut={() => supabase.auth.signOut()}
       />
 

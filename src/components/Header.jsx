@@ -6,7 +6,6 @@ export default function Header({
   onOpenAddModal,
   onOpenNotifications,
   alertsCount = 0,
-  userEmail,
   onSignOut,
 }) {
   return (
@@ -32,9 +31,6 @@ export default function Header({
             )}
           </button>
 
-          <span className="hidden sm:block max-w-32 truncate px-1 text-[11px] text-slate-400" title={userEmail}>
-            {userEmail}
-          </span>
           <button
             onClick={onSignOut}
             className="p-2.5 text-slate-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-2xl transition-all cursor-pointer"
