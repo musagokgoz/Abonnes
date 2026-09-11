@@ -16,6 +16,19 @@ Abonnes, abonelikleri tek yerde takip etmek için geliştirilmiş bir web uygula
 
 https://musagokgoz.github.io/Abonnes/
 
+Siteyi kullanmak için yukarıdaki adrese girip hesap oluşturabilir veya Google ile giriş yapabilirsiniz. Telefon, tablet ve bilgisayardan aynı adrese girerek aynı hesabınızdaki aboneliklere erişebilirsiniz.
+
+## Nasıl Kullanılır?
+
+1. Canlı siteyi açın ve giriş yapın.
+2. **Ekle** düğmesine basarak bir servis seçin veya özel abonelik oluşturun.
+3. Ücret, para birimi, ödeme döngüsü ve bir sonraki ödeme tarihini girin.
+4. Ücretsiz deneme varsa deneme bitiş tarihini ekleyin.
+5. Ana ekrandan yaklaşan ödemeleri, denemeleri ve tahmini harcamayı takip edin.
+6. Abonelik kartından düzenleme, silme veya iptal sayfasına gitme işlemlerini kullanın.
+
+Uygulamayı denemek için canlı siteye girip örnek bir hesap oluşturmanız yeterlidir. Verileriniz giriş yaptığınız Supabase hesabına özel tutulur.
+
 ## Teknolojiler
 
 - React
@@ -25,7 +38,7 @@ https://musagokgoz.github.io/Abonnes/
 - Supabase PostgreSQL
 - GitHub Pages
 
-## Yerel Çalıştırma
+## Geliştiriciler İçin Yerel Çalıştırma
 
 Gereksinim: Node.js 20 veya üzeri.
 
@@ -85,3 +98,14 @@ Folder: /docs
 - Kullanıcı verileri Supabase'te kullanıcı hesabına bağlı tutulur.
 - Row Level Security sayesinde kullanıcı yalnızca kendi aboneliklerini görebilir.
 - Supabase secret key, Google Client Secret ve diğer özel anahtarlar paylaşılmamalıdır.
+
+## Gelecek Planı
+
+Abonnes şu anda web uygulaması olarak kullanılabilir. İlerleyen sürümlerde aynı hesap ve veritabanı altyapısıyla:
+
+- Android uygulaması
+- iOS uygulaması
+- Mobil bildirimler
+- Daha gelişmiş ödeme ve harcama raporları
+
+eklenmesi planlanmaktadır.
