@@ -1,11 +1,12 @@
 import React from 'react';
-import { Plus, Bell, LogOut } from 'lucide-react';
+import { Plus, Bell, LogOut, WifiOff } from 'lucide-react';
 import AbonnesLogo from './AbonnesLogo';
 
 export default function Header({
   onOpenAddModal,
   onOpenNotifications,
   alertsCount = 0,
+  isOffline = false,
   onSignOut,
 }) {
   return (
@@ -19,6 +20,12 @@ export default function Header({
 
         {/* Sağ: Eylemler */}
         <div className="flex items-center gap-1.5 sm:gap-2">
+          {isOffline && (
+            <span className="inline-flex items-center gap-1 rounded-xl border border-amber-500/30 bg-amber-500/10 px-2 py-1 text-[10px] font-semibold text-amber-300" title="İnternet bağlantısı yok; son kayıtlı veriler gösteriliyor">
+              <WifiOff className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Offline</span>
+            </span>
+          )}
           {/* Bildirim & Hatırlatıcılar Butonu (Kırmızı Bildirim Rozeti ile) */}
           <button
             onClick={onOpenNotifications}

@@ -37,6 +37,7 @@ export default function App() {
   const [subscriptions, setSubscriptions] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [notificationPermission, setNotificationPermission] = useState('default');
+  const [isOffline, setIsOffline] = useState(() => !navigator.onLine);
 
   // Filtreler
   const [activeTab, setActiveTab] = useState('all'); // 'all' | 'trials' | 'upcoming'
@@ -96,6 +97,17 @@ export default function App() {
       setIsDataLoading(false);
     }
   }, [refreshData, user]);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   const handleRequestPermission = async () => {
     const res = await notificationService.requestPermission();
@@ -223,6 +235,7 @@ export default function App() {
         }}
         onOpenNotifications={() => setIsNotificationsOpen(true)}
         alertsCount={alerts.length}
+        isOffline={isOffline}
         onSignOut={() => supabase.auth.signOut()}
       />
 
