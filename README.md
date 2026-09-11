@@ -12,6 +12,8 @@ Abonnes, abonelikleri tek yerde takip etmek için geliştirilmiş bir web uygula
 - Aylık ve yıllık tahmini harcamayı görme
 - Web ve telefondan aynı hesaba erişme
 - İnternet yokken son senkronize abonelikleri görüntüleme
+- TL, USD, EUR veya GBP cinsinden ana para birimi seçme
+- Farklı para birimlerindeki abonelikleri tek toplamda görme
 
 ## Canlı Site
 
@@ -29,6 +31,8 @@ Siteyi kullanmak için yukarıdaki adrese girip hesap oluşturabilir veya Google
 6. Abonelik kartından düzenleme, silme veya iptal sayfasına gitme işlemlerini kullanın.
 
 Uygulamayı denemek için canlı siteye girip örnek bir hesap oluşturmanız yeterlidir. Verileriniz giriş yaptığınız Supabase hesabına özel tutulur.
+
+Ana para birimini üst menüdeki para birimi listesinden seçebilirsiniz. Uygulama, farklı para birimlerindeki abonelikleri ücretsiz ExchangeRate-API kurlarıyla seçtiğiniz para birimine çevirir. Kur servisine ulaşılamazsa son kayıtlı kur veya yaklaşık yedek kur kullanılır.
 
 ## İnternetsiz Kullanım
 

@@ -1,12 +1,15 @@
 import React from 'react';
 import { Plus, Bell, LogOut, WifiOff } from 'lucide-react';
 import AbonnesLogo from './AbonnesLogo';
+import { SUPPORTED_CURRENCIES } from '../services/currencyService';
 
 export default function Header({
   onOpenAddModal,
   onOpenNotifications,
   alertsCount = 0,
   isOffline = false,
+  primaryCurrency = 'TRY',
+  onPrimaryCurrencyChange,
   onSignOut,
 }) {
   return (
@@ -26,6 +29,16 @@ export default function Header({
               <span className="hidden sm:inline">Offline</span>
             </span>
           )}
+          <label className="sr-only" htmlFor="primary-currency">Ana para birimi</label>
+          <select
+            id="primary-currency"
+            value={primaryCurrency}
+            onChange={(event) => onPrimaryCurrencyChange(event.target.value)}
+            className="h-9 rounded-xl border border-slate-800 bg-slate-900 px-2 text-xs font-bold text-slate-300 outline-none focus:border-emerald-500"
+            title="Ana para birimi"
+          >
+            {SUPPORTED_CURRENCIES.map((currency) => <option key={currency} value={currency}>{currency}</option>)}
+          </select>
           {/* Bildirim & Hatırlatıcılar Butonu (Kırmızı Bildirim Rozeti ile) */}
           <button
             onClick={onOpenNotifications}

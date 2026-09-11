@@ -11,6 +11,7 @@ import NotificationModal from './components/NotificationModal';
 import { cloudStorageService } from './services/cloudStorageService';
 import { supabase } from './services/supabaseClient';
 import { notificationService } from './services/notificationService';
+import { getExchangeRates, getSavedPrimaryCurrency, savePrimaryCurrency } from './services/currencyService';
 import { differenceInCalendarDays, parseISO } from 'date-fns';
 import { Sparkles, Inbox } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -38,6 +39,8 @@ export default function App() {
   const [alerts, setAlerts] = useState([]);
   const [notificationPermission, setNotificationPermission] = useState('default');
   const [isOffline, setIsOffline] = useState(() => !navigator.onLine);
+  const [primaryCurrency, setPrimaryCurrency] = useState('TRY');
+  const [exchangeRates, setExchangeRates] = useState(null);
 
   // Filtreler
   const [activeTab, setActiveTab] = useState('all'); // 'all' | 'trials' | 'upcoming'
@@ -89,14 +92,26 @@ export default function App() {
 
   useEffect(() => {
     if (user) {
+      const savedCurrency = getSavedPrimaryCurrency(user.id);
+      setPrimaryCurrency(savedCurrency);
+      getExchangeRates(savedCurrency).then(setExchangeRates);
       refreshData().finally(() => setIsDataLoading(false));
       setNotificationPermission(notificationService.getPermissionStatus());
     } else {
       setSubscriptions([]);
       setAlerts([]);
       setIsDataLoading(false);
+      setPrimaryCurrency('TRY');
+      setExchangeRates(null);
     }
   }, [refreshData, user]);
+
+  const handlePrimaryCurrencyChange = async (currency) => {
+    if (!user) return;
+    setPrimaryCurrency(currency);
+    savePrimaryCurrency(user.id, currency);
+    setExchangeRates(await getExchangeRates(currency));
+  };
 
   useEffect(() => {
     const handleOnline = () => setIsOffline(false);
@@ -236,6 +251,8 @@ export default function App() {
         onOpenNotifications={() => setIsNotificationsOpen(true)}
         alertsCount={alerts.length}
         isOffline={isOffline}
+        primaryCurrency={primaryCurrency}
+        onPrimaryCurrencyChange={handlePrimaryCurrencyChange}
         onSignOut={() => supabase.auth.signOut()}
       />
 
@@ -253,7 +270,11 @@ export default function App() {
         <TrialAlertBanner alerts={alerts} onMarkCancelled={handleMarkCancelled} />
 
         {/* Ferah İstatistikler */}
-        <DashboardStats subscriptions={subscriptions} />
+        <DashboardStats
+          subscriptions={subscriptions}
+          primaryCurrency={primaryCurrency}
+          exchangeRates={exchangeRates?.rates}
+        />
 
         {/* Sadeleştirilmiş Sekmeler ve Arama */}
         <SubscriptionFilter

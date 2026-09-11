@@ -1,8 +1,8 @@
 import React from 'react';
-import { formatCurrency, convertToTRY } from '../services/currencyService';
+import { convertCurrency, formatCurrency } from '../services/currencyService';
 import { Clock } from 'lucide-react';
 
-export default function DashboardStats({ subscriptions }) {
+export default function DashboardStats({ subscriptions, primaryCurrency = 'TRY', exchangeRates }) {
   const activeSubscriptions = subscriptions.filter((sub) => sub.status !== 'cancelled');
   const monthlyTotalTRY = activeSubscriptions.reduce((sum, sub) => {
     let monthlyPrice = Number(sub.price) || 0;
@@ -11,7 +11,7 @@ export default function DashboardStats({ subscriptions }) {
     } else if (sub.billing_cycle === 'weekly') {
       monthlyPrice = (monthlyPrice * 52) / 12;
     }
-    return sum + convertToTRY(monthlyPrice, sub.currency);
+    return sum + convertCurrency(monthlyPrice, sub.currency, primaryCurrency, exchangeRates);
   }, 0);
 
   const yearlyTotalTRY = monthlyTotalTRY * 12;
@@ -27,7 +27,7 @@ export default function DashboardStats({ subscriptions }) {
             Aylık Toplam Harcama
           </span>
           <div className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-            {formatCurrency(monthlyTotalTRY, 'TRY')}
+            {formatCurrency(monthlyTotalTRY, primaryCurrency)}
           </div>
         </div>
 
@@ -47,7 +47,7 @@ export default function DashboardStats({ subscriptions }) {
 
           <div className="px-3 py-1.5 rounded-xl bg-slate-800/50 border border-slate-800 text-xs text-slate-400 hidden sm:flex items-center gap-1">
             <span>Yıllık:</span>
-            <strong className="text-slate-200">{formatCurrency(yearlyTotalTRY, 'TRY')}</strong>
+            <strong className="text-slate-200">{formatCurrency(yearlyTotalTRY, primaryCurrency)}</strong>
           </div>
         </div>
       </div>
