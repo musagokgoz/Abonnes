@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import { AlertCircle, ArrowLeft, Check, CheckCircle2, Eye, EyeOff, Globe2, KeyRound, Lock, LogIn, Mail, ShieldCheck, UserPlus } from 'lucide-react';
+import { AlertCircle, ArrowLeft, Check, CheckCircle2, Eye, EyeOff, Globe2, KeyRound, Lock, LogIn, Mail, UserPlus } from 'lucide-react';
 import { supabase } from '../services/supabaseClient';
+import AbonnesLogo from './AbonnesLogo';
 
 const PASSWORD_RULES = [
   { id: 'length', label: 'En az 8 karakter', test: (value) => value.length >= 8 },
@@ -81,7 +82,7 @@ export default function AuthScreen() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(16,185,129,0.12),_transparent_38%),radial-gradient(circle_at_bottom_left,_rgba(14,165,233,0.1),_transparent_36%)]" />
       <section className="relative w-full max-w-md rounded-[2rem] border border-slate-800 bg-slate-900/90 p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
         <div className="mb-7">
-          <div className="flex items-center gap-2 mb-5"><div className="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-400/25 flex items-center justify-center"><ShieldCheck className="w-5 h-5 text-emerald-400" /></div><span className="text-sm font-black tracking-wide text-white">ABONNES</span></div>
+          <div className="flex items-center gap-3 mb-5"><AbonnesLogo className="w-11 h-11" size={28} /><span className="text-sm font-black tracking-wide text-white">ABONNES</span></div>
           <p className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-2">{isForgot ? 'Hesap kurtarma' : isSignup ? 'Yeni hesap' : 'Hoş geldin'}</p>
           <h1 className="text-2xl font-black text-white">{isForgot ? 'Şifreni yenile' : isSignup ? 'Hesabını oluştur' : 'Aboneliklerini takip et'}</h1>
           <p className="text-sm text-slate-400 mt-2">{isForgot ? 'Şifre yenileme bağlantısını e-posta adresine gönderelim.' : 'Verilerine telefon ve web üzerinden güvenle eriş.'}</p>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Bell } from 'lucide-react';
+import { Plus, Bell, LogOut } from 'lucide-react';
 import AbonnesLogo from './AbonnesLogo';
 
 export default function Header({
@@ -32,12 +32,16 @@ export default function Header({
             )}
           </button>
 
+          <span className="hidden sm:block max-w-32 truncate px-1 text-[11px] text-slate-400" title={userEmail}>
+            {userEmail}
+          </span>
           <button
             onClick={onSignOut}
-            className="hidden sm:block max-w-32 truncate px-2 text-[11px] text-slate-400 hover:text-white"
+            className="p-2.5 text-slate-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-2xl transition-all cursor-pointer"
             title="Çıkış yap"
+            aria-label="Çıkış yap"
           >
-            {userEmail}
+            <LogOut className="w-5 h-5" />
           </button>
 
           {/* Yeni Abonelik Ekle Butonu */}
