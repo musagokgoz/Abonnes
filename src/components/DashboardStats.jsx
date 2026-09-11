@@ -2,7 +2,7 @@ import React from 'react';
 import { formatCurrency, convertToTRY } from '../services/currencyService';
 import { Clock } from 'lucide-react';
 
-export default function DashboardStats({ subscriptions, alerts }) {
+export default function DashboardStats({ subscriptions }) {
   const activeSubscriptions = subscriptions.filter((sub) => sub.status !== 'cancelled');
   const monthlyTotalTRY = activeSubscriptions.reduce((sum, sub) => {
     let monthlyPrice = Number(sub.price) || 0;

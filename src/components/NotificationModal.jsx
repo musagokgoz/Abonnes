@@ -1,6 +1,5 @@
 import React from 'react';
-import { X, Bell, BellRing, AlertTriangle, ShieldCheck, Share, PlusSquare, ExternalLink, Check } from 'lucide-react';
-import { notificationService } from '../services/notificationService';
+import { X, BellRing, AlertTriangle, ShieldCheck, Share, Check } from 'lucide-react';
 
 export default function NotificationModal({
   isOpen,

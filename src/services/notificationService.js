@@ -62,7 +62,7 @@ export const notificationService = {
       if (typeof Notification.requestPermission === 'function') {
         try {
           permission = await Notification.requestPermission();
-        } catch (e) {
+        } catch {
           permission = await new Promise((resolve) => {
             Notification.requestPermission(resolve);
           });
@@ -143,7 +143,9 @@ export const notificationService = {
               daysLeft,
             });
           }
-        } catch (e) {}
+        } catch (error) {
+          console.warn(`Geçersiz deneme bitiş tarihi: ${sub.subscription_id}`, error);
+        }
       }
 
       // 2. Yaklaşan Fatura
@@ -166,7 +168,9 @@ export const notificationService = {
               daysLeft,
             });
           }
-        } catch (e) {}
+        } catch (error) {
+          console.warn(`Geçersiz ödeme tarihi: ${sub.subscription_id}`, error);
+        }
       }
     });
 

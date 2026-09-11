@@ -2,7 +2,7 @@ import React from 'react';
 import { ExternalLink, Edit3, Trash2, Calendar, CreditCard, Clock } from 'lucide-react';
 import { differenceInCalendarDays, parseISO, format } from 'date-fns';
 import { tr } from 'date-fns/locale';
-import { formatCurrency, convertToTRY } from '../services/currencyService';
+import { formatCurrency } from '../services/currencyService';
 import BrandLogo from './BrandLogo';
 
 export default function SubscriptionCard({ subscription, onEdit, onDelete }) {
@@ -28,9 +28,6 @@ export default function SubscriptionCard({ subscription, onEdit, onDelete }) {
 
   const isExpired = daysLeft !== null && daysLeft < 0;
   const isUrgent = daysLeft !== null && daysLeft <= 3 && daysLeft >= 0;
-  const isForeign = subscription.currency !== 'TRY';
-  const priceInTRY = isForeign ? convertToTRY(subscription.price, subscription.currency) : null;
-
   return (
     <div className={`rounded-3xl border bg-slate-900/60 p-5 transition-all flex flex-col justify-between ${
       subscription.is_trial && isUrgent

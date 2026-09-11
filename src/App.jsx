@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import AuthScreen from './components/AuthScreen';
 import Header from './components/Header';
 import DashboardStats from './components/DashboardStats';
@@ -13,6 +13,21 @@ import { notificationService } from './services/notificationService';
 import { differenceInCalendarDays, parseISO } from 'date-fns';
 import { Sparkles, Inbox } from 'lucide-react';
 import confetti from 'canvas-confetti';
+
+function isUpcomingSubscription(subscription, today) {
+  const dateString = subscription.is_trial && subscription.trial_end_date
+    ? subscription.trial_end_date
+    : subscription.next_billing_date;
+
+  if (!dateString) return false;
+
+  try {
+    const daysUntilDue = differenceInCalendarDays(parseISO(dateString), today);
+    return daysUntilDue >= 0 && daysUntilDue <= 7;
+  } catch {
+    return false;
+  }
+}
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -31,12 +46,12 @@ export default function App() {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
-  const showToast = (msg) => {
+  const showToast = useCallback((msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3500);
-  };
+  }, []);
 
-  const refreshData = async () => {
+  const refreshData = useCallback(async () => {
     if (!user) return;
     try {
       const list = await cloudStorageService.getSubscriptions(user.id);
@@ -45,7 +60,7 @@ export default function App() {
     } catch (error) {
       showToast(`Veriler yüklenemedi: ${error.message}`);
     }
-  };
+  }, [showToast, user]);
 
   useEffect(() => {
     let isMounted = true;
@@ -75,7 +90,7 @@ export default function App() {
       setSubscriptions([]);
       setAlerts([]);
     }
-  }, [user]);
+  }, [refreshData, user]);
 
   const handleRequestPermission = async () => {
     const res = await notificationService.requestPermission();
@@ -153,7 +168,7 @@ export default function App() {
 
     return subscriptions
       .filter((sub) => {
-      if (sub.status === 'cancelled') return activeTab === 'all';
+        if (sub.status === 'cancelled') return activeTab === 'all';
         if (searchQuery.trim()) {
           const q = searchQuery.toLowerCase();
           const matchName = sub.custom_name?.toLowerCase().includes(q);
@@ -164,14 +179,7 @@ export default function App() {
         if (activeTab === 'trials') {
           return sub.is_trial;
         } else if (activeTab === 'upcoming') {
-          const dateStr = sub.is_trial && sub.trial_end_date ? sub.trial_end_date : sub.next_billing_date;
-          if (!dateStr) return false;
-          try {
-            const days = differenceInCalendarDays(parseISO(dateStr), today);
-            return days >= 0 && days <= 7;
-          } catch (e) {
-            return false;
-          }
+          return isUpcomingSubscription(sub, today);
         }
 
         return true;
@@ -187,16 +195,7 @@ export default function App() {
     const today = new Date();
     const activeSubscriptions = subscriptions.filter((s) => s.status !== 'cancelled');
     const trials = activeSubscriptions.filter((s) => s.is_trial).length;
-    const upcoming = activeSubscriptions.filter((s) => {
-      const dateStr = s.is_trial && s.trial_end_date ? s.trial_end_date : s.next_billing_date;
-      if (!dateStr) return false;
-      try {
-        const days = differenceInCalendarDays(parseISO(dateStr), today);
-        return days >= 0 && days <= 7;
-      } catch (e) {
-        return false;
-      }
-    }).length;
+    const upcoming = activeSubscriptions.filter((subscription) => isUpcomingSubscription(subscription, today)).length;
 
     return { all: subscriptions.length, trials, upcoming };
   }, [subscriptions]);
@@ -234,7 +233,7 @@ export default function App() {
         <TrialAlertBanner alerts={alerts} onMarkCancelled={handleMarkCancelled} />
 
         {/* Ferah İstatistikler */}
-        <DashboardStats subscriptions={subscriptions} alerts={alerts} />
+        <DashboardStats subscriptions={subscriptions} />
 
         {/* Sadeleştirilmiş Sekmeler ve Arama */}
         <SubscriptionFilter
