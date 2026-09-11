@@ -6,7 +6,6 @@ import TrialAlertBanner from './components/TrialAlertBanner';
 import SubscriptionFilter from './components/SubscriptionFilter';
 import SubscriptionCard from './components/SubscriptionCard';
 import SubscriptionModal from './components/SubscriptionModal';
-import SettingsModal from './components/SettingsModal';
 import NotificationModal from './components/NotificationModal';
 import { cloudStorageService } from './services/cloudStorageService';
 import { supabase } from './services/supabaseClient';
@@ -29,7 +28,6 @@ export default function App() {
   // Modallar
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSub, setEditingSub] = useState(null);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
@@ -217,7 +215,6 @@ export default function App() {
           setEditingSub(null);
           setIsModalOpen(true);
         }}
-        onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenNotifications={() => setIsNotificationsOpen(true)}
         alertsCount={alerts.length}
         userEmail={user.email}
@@ -310,14 +307,6 @@ export default function App() {
         editingSubscription={editingSub}
       />
 
-      {/* Ayarlar Modal */}
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-        onDataChanged={refreshData}
-        subscriptions={subscriptions}
-        userId={user.id}
-      />
     </div>
   );
 }

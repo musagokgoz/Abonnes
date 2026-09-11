@@ -1,10 +1,9 @@
 import React from 'react';
-import { Plus, Bell, Settings } from 'lucide-react';
+import { Plus, Bell } from 'lucide-react';
 import AbonnesLogo from './AbonnesLogo';
 
 export default function Header({
   onOpenAddModal,
-  onOpenSettings,
   onOpenNotifications,
   alertsCount = 0,
   userEmail,
@@ -31,15 +30,6 @@ export default function Header({
             {alertsCount > 0 && (
               <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-slate-950 animate-pulse" />
             )}
-          </button>
-
-          {/* Ayarlar */}
-          <button
-            onClick={onOpenSettings}
-            className="p-2.5 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-2xl transition-all cursor-pointer"
-            title="Ayarlar & Yedekleme"
-          >
-            <Settings className="w-5 h-5" />
           </button>
 
           <button
