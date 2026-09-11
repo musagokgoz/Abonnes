@@ -123,6 +123,51 @@ export default function BrandLogo({ serviceId, name, brandColor, className = "w-
     );
   }
 
+  // Digiturk
+  if (id.includes('digiturk')) {
+    return (
+      <div className={`${className} rounded-xl bg-[#E30613] flex items-center justify-center shadow-md p-1 shrink-0`}>
+        <span className="text-white font-black text-[10px] tracking-tight">DİGİTÜRK</span>
+      </div>
+    );
+  }
+
+  // TV+
+  if (id.includes('tv-plus')) {
+    return (
+      <div className={`${className} rounded-xl bg-[#FF6B00] flex items-center justify-center shadow-md p-1 shrink-0`}>
+        <span className="text-white font-black text-sm tracking-tight">TV+</span>
+      </div>
+    );
+  }
+
+  // S Sport Plus
+  if (id.includes('s-sport')) {
+    return (
+      <div className={`${className} rounded-xl bg-[#111827] border border-slate-600 flex items-center justify-center shadow-md p-1 shrink-0`}>
+        <span className="text-white font-black text-[10px] tracking-tight">S SPORT+</span>
+      </div>
+    );
+  }
+
+  // MUBI
+  if (id.includes('mubi')) {
+    return (
+      <div className={`${className} rounded-xl bg-[#2B2B2B] flex items-center justify-center shadow-md p-1 shrink-0`}>
+        <span className="text-white font-black text-xs tracking-tight">MUBI</span>
+      </div>
+    );
+  }
+
+  // Tivibu
+  if (id.includes('tivibu')) {
+    return (
+      <div className={`${className} rounded-xl bg-[#00A4E4] flex items-center justify-center shadow-md p-1 shrink-0`}>
+        <span className="text-white font-black text-xs tracking-tight">tivibu</span>
+      </div>
+    );
+  }
+
   // Apple (iCloud, Apple Music, Apple One)
   if (id.includes('apple') || id.includes('icloud')) {
     return (
