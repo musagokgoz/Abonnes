@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import AuthScreen from './components/AuthScreen';
+import LoadingScreen from './components/LoadingScreen';
 import Header from './components/Header';
 import DashboardStats from './components/DashboardStats';
 import TrialAlertBanner from './components/TrialAlertBanner';
@@ -32,6 +33,7 @@ function isUpcomingSubscription(subscription, today) {
 export default function App() {
   const [user, setUser] = useState(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [isDataLoading, setIsDataLoading] = useState(true);
   const [subscriptions, setSubscriptions] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [notificationPermission, setNotificationPermission] = useState('default');
@@ -67,12 +69,14 @@ export default function App() {
     supabase.auth.getSession().then(({ data }) => {
       if (isMounted) {
         setUser(data.session?.user ?? null);
+        setIsDataLoading(Boolean(data.session?.user));
         setIsAuthLoading(false);
       }
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      setIsDataLoading(Boolean(session?.user));
       setIsAuthLoading(false);
     });
 
@@ -84,11 +88,12 @@ export default function App() {
 
   useEffect(() => {
     if (user) {
-      refreshData();
+      refreshData().finally(() => setIsDataLoading(false));
       setNotificationPermission(notificationService.getPermissionStatus());
     } else {
       setSubscriptions([]);
       setAlerts([]);
+      setIsDataLoading(false);
     }
   }, [refreshData, user]);
 
@@ -201,10 +206,12 @@ export default function App() {
   }, [subscriptions]);
 
   if (isAuthLoading) {
-    return <div className="min-h-screen bg-slate-950 text-slate-400 flex items-center justify-center text-sm">Yükleniyor...</div>;
+    return <LoadingScreen />;
   }
 
   if (!user) return <AuthScreen />;
+
+  if (isDataLoading) return <LoadingScreen />;
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
