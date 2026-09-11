@@ -1,16 +1,87 @@
-# React + Vite
+# Abonnes
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Abonnes, abonelikleri tek yerde takip etmek için geliştirilmiş bir web uygulamasıdır.
 
-Currently, two official plugins are available:
+## Neler Yapılabilir?
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- E-posta veya Google hesabı ile giriş yapma
+- Abonelik ekleme, düzenleme ve silme
+- Aylık, haftalık ve yıllık ödeme döngüleri
+- Deneme süresi ve yaklaşan ödeme uyarıları
+- Abonelikleri kategoriye ve aramaya göre filtreleme
+- Aylık ve yıllık tahmini harcamayı görme
+- Web ve telefondan aynı hesaba erişme
 
-## React Compiler
+## Canlı Site
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+https://musagokgoz.github.io/Abonnes/
 
-## Expanding the Oxlint configuration
+## Teknolojiler
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- React
+- Vite
+- Tailwind CSS
+- Supabase Auth
+- Supabase PostgreSQL
+- GitHub Pages
+
+## Yerel Çalıştırma
+
+Gereksinim: Node.js 20 veya üzeri.
+
+```bash
+git clone https://github.com/musagokgoz/Abonnes.git
+cd Abonnes
+npm install
+npm run dev
+```
+
+Tarayıcıda Vite'ın gösterdiği adresi açın. Genellikle:
+
+```text
+http://localhost:5173
+```
+
+## Supabase Kurulumu
+
+1. Supabase projesi oluşturun.
+2. **SQL Editor** bölümünü açın.
+3. `supabase/schema.sql` dosyasındaki SQL kodunu çalıştırın.
+4. Supabase Authentication bölümünde e-posta girişini etkinleştirin.
+5. Google ile giriş kullanılacaksa Google provider ayarlarını tamamlayın.
+
+Yerel geliştirme için proje kökünde `.env.local` dosyası oluşturun:
+
+```env
+VITE_SUPABASE_URL=https://proje-id.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=publishable-key
+```
+
+`.env.local` dosyası GitHub'a gönderilmez. Supabase `secret` anahtarını frontend koduna veya GitHub'a kesinlikle eklemeyin.
+
+## Komutlar
+
+```bash
+npm run dev     # Geliştirme sunucusu
+npm run lint    # Kod kontrolü
+npm run build   # Production build
+npm run preview # Production build önizlemesi
+```
+
+## Yayınlama
+
+`main` branch'ine gönderilen değişiklikler GitHub Pages workflow'u tarafından build edilir ve `docs` klasörüne aktarılır.
+
+GitHub Pages ayarı:
+
+```text
+Settings > Pages > Deploy from a branch
+Branch: main
+Folder: /docs
+```
+
+## Güvenlik
+
+- Kullanıcı verileri Supabase'te kullanıcı hesabına bağlı tutulur.
+- Row Level Security sayesinde kullanıcı yalnızca kendi aboneliklerini görebilir.
+- Supabase secret key, Google Client Secret ve diğer özel anahtarlar paylaşılmamalıdır.
